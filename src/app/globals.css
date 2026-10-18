@@ -1,0 +1,200 @@
+@import "tailwindcss";
+
+/*
+ * Palette: Cloud Dancer #F0EEE9 · Nordic Breeze #D3DDE7 · Duranta Yellow #D8E63C ·
+ * Light Violet #D6B4FC · Intergalactic Highway #273287 · Tetsu-Kon Blue #17184B.
+ * Dark is the default; [data-theme="light"] on <html> switches every token.
+ */
+@theme {
+  --color-bg: #0c0d15;
+  --color-panel: #13141e;
+  --color-panel2: #181a26;
+  --color-raise: #20222f;
+  --color-line: #222433;
+  --color-line2: #31344a;
+  --color-ink: #f0eee9;
+  --color-ink2: #d3dde7;
+  --color-mute: #8b8fa3;
+  --color-accent: #d8e63c;
+  --color-on-accent: #17184b;
+  --color-llm: #d3dde7;
+  --color-jev: #d6b4fc;
+  --color-down: #ef6b6b;
+  --color-up: #d8e63c;
+  --color-loss: #ff9f9f;
+  --color-hedge: #7fe07f;
+  --color-code: #090a10;
+  --color-heat-mid: #232535;
+  --color-heat-empty: #161722;
+  /* status palette — reserved for threat state, always paired with icon + label */
+  --color-crit: #d03b3b;
+  --color-serious: #ec835a;
+  --color-warn: #fab219;
+  --color-good: #0ca30c;
+  --font-sans: var(--font-plex), ui-sans-serif, system-ui;
+  --font-cond: var(--font-plex-cond), var(--font-plex), ui-sans-serif;
+  --font-mono: var(--font-jb), ui-monospace, monospace;
+  --color-ramp1: #d6b4fc;
+  --color-ramp2: #a7a3d9;
+  --color-ramp3: #6d72a8;
+  /* chart marks, derived from the palette and validated (dataviz validate_palette.js):
+     diverging down/up = Intergalactic blue step ↔ Duranta yellow step (CVD ΔE 29),
+     sequential severity = one blue hue, near-surface → bright */
+  --color-chart-down: #6f7de6;
+  --color-chart-up: #939e22;
+  --color-seq1: #3a4396;
+  --color-seq2: #5563c8;
+  --color-seq3: #7e8cf0;
+  --color-seq4: #b3bcf7;
+}
+
+:root {
+  color-scheme: dark;
+  --status-ink-mix: 0%;
+  --grad-text: linear-gradient(90deg, #d8e63c, #d6b4fc 70%);
+  --page-bg: radial-gradient(80% 55% at 100% 110%, rgba(39, 50, 135, 0.16), transparent 60%) fixed,
+    linear-gradient(170deg, #11121c 0%, #0d0e16 55%, #0b0c13 100%) fixed;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --color-bg: #f0eee9;
+  --color-panel: #fbfaf7;
+  --color-panel2: #f2f5f9;
+  --color-raise: #e6ecf3;
+  --color-line: #dde1e8;
+  --color-line2: #c6cee0;
+  --color-ink: #17184b;
+  --color-ink2: #363c78;
+  --color-mute: #6c6f98;
+  --color-accent: #273287;
+  --color-on-accent: #f0eee9;
+  --color-llm: #4a5aa8;
+  --color-jev: #7a45d6;
+  --color-down: #c94444;
+  --color-up: #273287;
+  --color-loss: #b63a3a;
+  --color-hedge: #0b7d0b;
+  --color-code: #f2f5f9;
+  --color-heat-mid: #e3e7f1;
+  --color-heat-empty: #eceff4;
+  /* status hues stay fixed; text darkens toward ink so it stays legible on light */
+  --status-ink-mix: 38%;
+  --grad-text: linear-gradient(90deg, #273287, #7a45d6 75%);
+  --page-bg: radial-gradient(80% 55% at 100% 110%, rgba(211, 221, 231, 0.55), transparent 60%) fixed,
+    linear-gradient(170deg, #f4f2ee 0%, #f0eee9 50%, #e2e8ef 100%) fixed;
+  --color-ramp1: #273287;
+  --color-ramp2: #6f6fd0;
+  --color-ramp3: #b9a3f2;
+  --color-chart-down: #3e4bb2;
+  --color-chart-up: #7f8a14;
+  --color-seq1: #9fa8e6;
+  --color-seq2: #6b78d2;
+  --color-seq3: #3f4cb0;
+  --color-seq4: #273287;
+}
+
+html,
+body {
+  background: var(--color-bg);
+  background: var(--page-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-feature-settings: "ss01", "tnum";
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line2) transparent;
+}
+
+.panel {
+  background: color-mix(in oklab, var(--color-panel) 90%, transparent);
+  border: 1px solid var(--color-line);
+  border-radius: 10px;
+}
+
+.label {
+  font-family: var(--font-cond);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-mute);
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.grid-bg {
+  background-image: linear-gradient(var(--color-line) 1px, transparent 1px), linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.glass {
+  background: rgba(24, 26, 40, 0.6);
+  backdrop-filter: blur(18px) saturate(1.4);
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+.pulse-dot { animation: pulse-dot 1.4s ease-in-out infinite; }
+
+@keyframes slide-in {
+  from { transform: translateY(-14px) scale(0.98); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+.slide-in { animation: slide-in 0.38s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+
+@keyframes buzz {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-2px) rotate(-0.4deg); }
+  40% { transform: translateX(2px) rotate(0.4deg); }
+  60% { transform: translateX(-1.5px); }
+  80% { transform: translateX(1.5px); }
+}
+.buzz { animation: buzz 0.45s ease-in-out 2; }
+
+@keyframes stage-in {
+  from { opacity: 0; transform: translateX(-6px); }
+  to { opacity: 1; transform: none; }
+}
+.stage-in { animation: stage-in 0.35s ease-out both; }
+
+@keyframes scan {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
+}
+.scan::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--color-accent) 18%, transparent), transparent);
+  animation: scan 1.2s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse-dot, .slide-in, .buzz, .stage-in, .scan::after { animation: none; }
+}
+
+/* Gradients 04 / 05 from the palette, for brand moments */
+.grad-04 {
+  background: linear-gradient(180deg, #d8e63c 0%, #d6b4fc 45%, #273287 100%);
+}
+.grad-05 {
+  background: linear-gradient(180deg, #10111c 0%, #161a33 55%, #222a55 85%, #3a3f6e 100%);
+}
+.text-grad {
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
